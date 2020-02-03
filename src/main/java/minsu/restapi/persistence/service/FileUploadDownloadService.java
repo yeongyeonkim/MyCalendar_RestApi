@@ -43,8 +43,8 @@ public class FileUploadDownloadService {
             // 파일명에 부적합 문자가 있는지 확인한다.
             if(fileName.contains(".."))
                 throw new FileUploadException("파일명에 부적합 문자가 포함되어 있습니다. " + fileName);
-            byte[] bytes = file.getBytes();
-            UUID uuid = UUID.randomUUID(); //
+
+            UUID uuid = UUID.randomUUID(); // 파일 명 랜덤. 중복 파일명으로 기존 파일명이 덮어씌워지는 것을 막기 위함.
             String savedName = uuid.toString() + "_" + fileName;
 
             Path targetLocation = this.fileLocation.resolve(savedName);

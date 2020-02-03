@@ -95,11 +95,12 @@ public class UserController {
                 String token = jwtService.create(reqUser);
                 res.setHeader("jwt-auth-token", token); // ?
 //                System.out.println(res.getHeaderNames()); // [jwt-auth-token]
+
                 resultMap.put("status", true);
                 resultMap.put("data", reqUser);
-                resultMap.put("token", token); //이거 필요한거 아니냐
+                resultMap.put("token", token);
 //                resultMap.put("res", res);
-                System.out.println("json형식" + new Gson().toJson(resultMap)); //★★★★★★★★★★★★★★
+//                System.out.println("json형식" + new Gson().toJson(resultMap)); //★★★★★★★★★★★★★★
                 return response(resultMap, HttpStatus.ACCEPTED, true);
             } else {
                 resultMap.put("message", "아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요");
@@ -149,30 +150,6 @@ public class UserController {
     }
 
 
-    //    로그아웃 / 하다가 맘.
-//    @GetMapping("/user/signout")
-//    public ResponseEntity<?> getSignOut(@RequestBody Map<String, Object> m){
-//        String username = null;
-//        Object accessToken = m.get("jwt-auth-token");
-//        try{
-//            username = jwtService.getUserName((String)accessToken);
-//        } catch (IllegalArgumentException e) {} catch (ExpiredJwtException e){
-//            username = e.getClaims().get("name") + "";
-//        }
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-
-    //user 객체 받아올때 category id값만 보내주고 name은 안줘도 입력잘댐
-//    @PostMapping("/user")
-//    public Map<String, String> insertUser(@RequestBody UserDto userDto) throws Exception {
-//        User user = convertToEntity(userDto);
-//        userService.save(user);
-//        Map<String, String> map = new HashMap<>();
-//        map.put("result", "success");
-//        return map;
-//
-//    }
     @PostMapping("/user/signup")
     @ApiOperation("가입하기")
     public ResponseEntity<Map<String, Object>> postSignUp(@RequestBody User user) {
@@ -198,17 +175,6 @@ public class UserController {
         return map;
 
     }
-//
-//
-//    @DeleteMapping("/user/{email}")
-//    public Map<String, String> deleteUser(@PathVariable String email) {
-//        Map<String, String> map = new HashMap<>();
-//        userService.deleteByEmail(email);
-//        map.put("result", "success");
-//        return map;
-//
-//    }
-
     private User convertToEntity(UserDto userDto) throws Exception {
 
         User user = modelMapper.map(userDto, User.class);
@@ -233,22 +199,6 @@ public class UserController {
         return user;
     }
 
-//    @PutMapping("/update")
-//    @ApiOperation("회원정보 수정하기")
-//    public ResponseEntity<Map<String, Object>> updateUser(@RequestBody User user) {
-//        Map<String, Object> resultMap = new HashMap<>();
-//        try {
-//            int updateUser = userService.save(user);
-//            if(updateUser == 1) {
-//                return response(resultMap, HttpStatus.ACCEPTED, true);
-//            } else {
-//                return response("유효하지 않은 접근입니다.", HttpStatus.CONFLICT, false);
-//            }
-//        } catch (Exception e) {
-//            return response(e.getMessage(), HttpStatus.CONFLICT, false);
-//        }
-//    }
-//
     @DeleteMapping("/remove")
     @ApiOperation("회원정보 탈퇴하기")
     public ResponseEntity<Map<String, Object>> deleteUser(@RequestParam String email) {
@@ -268,7 +218,34 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", status);
         resultMap.put("data", data);
-        System.out.println("data : " + data + ", status  : " + status + ", : httpstatus: " + httpstatus);
+        System.out.println(data);
+        System.out.println(status);
+        System.out.println(httpstatus);
         return new ResponseEntity<Map<String, Object>>(resultMap, httpstatus);
     }
+
+    //    로그아웃 / 하다가 맘.
+//    @GetMapping("/user/signout")
+//    public ResponseEntity<?> getSignOut(@RequestBody Map<String, Object> m){
+//        String username = null;
+//        Object accessToken = m.get("jwt-auth-token");
+//        try{
+//            username = jwtService.getUserName((String)accessToken);
+//        } catch (IllegalArgumentException e) {} catch (ExpiredJwtException e){
+//            username = e.getClaims().get("name") + "";
+//        }
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+
+    //user 객체 받아올때 category id값만 보내주고 name은 안줘도 입력잘댐
+//    @PostMapping("/user")
+//    public Map<String, String> insertUser(@RequestBody UserDto userDto) throws Exception {
+//        User user = convertToEntity(userDto);
+//        userService.save(user);
+//        Map<String, String> map = new HashMap<>();
+//        map.put("result", "success");
+//        return map;
+//
+//    }
 }
